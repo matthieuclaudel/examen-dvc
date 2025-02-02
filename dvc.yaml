@@ -5,4 +5,38 @@ stages:
     - data/raw_data
     - src/data/split_data.py
     outs:
-    - data/preprocessed
+    - data/processed_data/split
+  normalize:
+    cmd: python src/data/normalize.py
+    deps:
+    - data/processed_data/split
+    - src/data/normalize.py
+    outs:
+    - data/processed_data/normalize
+  gridsearch:
+    cmd: python src/models/gridsearch.py
+    deps:
+    - data/processed_data/normalize
+    - data/processed_data/split
+    - src/models/gridsearch.py
+    outs:
+    - models/params
+  training:
+    cmd: python src/models/training.py
+    deps:
+    - data/processed_data/normalize
+    - data/processed_data/split
+    - models/params
+    - src/models/training.py
+    outs:
+    - models/model
+  evaluate:
+    cmd: python src/models/evaluate.py
+    deps:
+    - data/processed_data/normalize
+    - data/processed_data/split
+    - models/model
+    - src/models/evaluate.py
+    outs:
+    - data/evaluation
+    - metrics
