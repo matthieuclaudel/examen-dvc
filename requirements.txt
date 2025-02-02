@@ -1,0 +1,10 @@
+# local package
+-e .
+
+# external requirements
+pandas
+numpy 
+pathlib 
+scikit-learn
+imbalanced-learn
+joblib
